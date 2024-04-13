@@ -1,0 +1,4 @@
+name: JobBoard
+version: '${version}'
+main: net.refractored.jobboard.JobBoard
+api-version: '1.20'
