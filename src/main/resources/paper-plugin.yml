@@ -2,3 +2,9 @@ name: JobBoard
 version: '${version}'
 main: net.refractored.jobboard.JobBoard
 api-version: '1.20'
+dependencies:
+  server:
+    eco:
+      load: BEFORE
+      required: true
+      join-classpath: true

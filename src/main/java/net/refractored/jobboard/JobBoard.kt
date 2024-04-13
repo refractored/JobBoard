@@ -1,20 +1,23 @@
 package net.refractored.jobboard
 
-import com.j256.ormlite.jdbc.JdbcConnectionSource
-import com.j256.ormlite.support.ConnectionSource
-import com.j256.ormlite.table.TableUtils
 import com.willfp.eco.core.EcoPlugin
-import net.refractored.jobboard.order.order
+import net.refractored.jobboard.commands.OrderCreate
+import net.refractored.jobboard.database.Database
+import revxrsal.commands.bukkit.BukkitCommandHandler
 
 
 class JobBoard : EcoPlugin() {
-
-    private lateinit var connectionSource: ConnectionSource
+    lateinit var handler: BukkitCommandHandler
 
     override fun handleEnable() {
         setInstance(this)
-        connectToDatabase()
-        createTables()
+        logger.info("Connecting to database")
+        Database.init()
+
+        //Register commands
+        handler = BukkitCommandHandler.create(this)
+        handler.register(OrderCreate())
+        handler.registerBrigadier()
     }
 
     override fun handleDisable() {
@@ -22,15 +25,10 @@ class JobBoard : EcoPlugin() {
 
     }
 
-    private fun connectToDatabase() {
-        val databaseUrl = configYml.getString("database.URL")
-        val username = configYml.getString("database.user")
-        val password = configYml.getString("database.password")
-        connectionSource = JdbcConnectionSource(databaseUrl, username, password)
+    override fun handleReload() {
+
     }
-    private fun createTables() {
-        TableUtils.createTableIfNotExists(connectionSource, order::class.java)
-    }
+
     companion object {
         private lateinit var instance: JobBoard
 
