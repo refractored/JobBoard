@@ -26,11 +26,11 @@ data class Order(
         @DatabaseField
         var timeCreated: Date,
 
-        @DatabaseField
-        var item: String
+        @DatabaseField(dataType = DataType.BYTE_ARRAY, columnDefinition = "LONGBLOB")
+        var item: ByteArray?
 
 ) {
-    constructor() : this(UUID.randomUUID(), 0.0, UUID.randomUUID(), null, Date(), "")
+    constructor() : this(UUID.randomUUID(), 0.0, UUID.randomUUID(), null, Date(), null)
 
         fun serializeItemStack(itemStack: ItemStack): String {
                 return Gson().toJson(itemStack.serialize())
